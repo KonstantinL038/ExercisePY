@@ -1,2 +1,2 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+list_1 = ["Обезьяна", "Петух", "Собака", "Свинья", "Крыса", "Бык", "Тигр", "Заяц", "Дракон", "Змея", "Лошадь", "Овца"]
+print(list_1)
