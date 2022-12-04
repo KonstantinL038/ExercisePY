@@ -1,3 +1,6 @@
+import re
+
+
 class Loader:
     hospital_patients = []
     ambulatory_patients = []
@@ -24,7 +27,7 @@ class Loader:
 class Person:
     __id = 0
 
-    def __init__(self, name, gender, birth, place_birth, married, passport, res, edu):
+    def __init__(self, name, gender, birth, place_birth, married, passport, res, edu, phone):
         self.__id += 1  # Номер экземпляра
         self.__full_name = self.cut_full_name(name)  # Имя обрезанное до 25 символов
 
@@ -52,6 +55,11 @@ class Person:
             self.__level_education = edu
         else:
             self.__level_education = None
+
+        if self.check_phone(phone):  # Проверяет верность вводимых данных о телефоне
+            self.__phone_number = phone
+        else:
+            self.__phone_number = None
 
     @staticmethod
     def cut_full_name(name):
@@ -95,6 +103,11 @@ class Person:
             return True
         else:
             return False
+
+    @staticmethod
+    def check_phone(phone):
+        """Только строка из 16 символов следующего формата: +7(999)999-99-99, где 9 - любая цифра."""
+        return bool(re.match(r'\+7\(\d{3}\)\d{3}-\d{2}-\d{2}', phone))
 
     @property  # Свойство - full_name
     def full_name(self):
@@ -147,3 +160,14 @@ class Person:
             self.__level_education = edu
         else:
             self.__level_education = None
+
+    @property  # Свойство - phone_number
+    def phone_number(self):
+        return self.__phone_number
+
+    @phone_number.setter
+    def phone_number(self, phone):
+        if self.check_phone(phone):  # Проверяет верность вводимых данных о телефоне
+            self.__phone_number = phone
+        else:
+            self.__phone_number = None
