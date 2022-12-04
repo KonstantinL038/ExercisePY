@@ -1,5 +1,8 @@
 import re
 
+# TODO в выводе заменить False и True на да, нет. Так же, чтобы у опред. переменных из файла принимались только True
+#  и False. Продолжать задание
+
 
 class Loader:
     hospital_patients = []
@@ -17,7 +20,11 @@ class Loader:
 
     @classmethod
     def load_nurses(cls, file_name):
-        pass
+        with open(file_name, 'r', encoding='utf-8') as file_4:
+            for line in file_4:
+                line = line.strip().split(';')[:-1]
+                nurse = Nurse(*line)
+                cls.nurses.append(nurse)
 
     @classmethod
     def load_doctors(cls, file_name):
@@ -64,7 +71,7 @@ class Person:
     @staticmethod
     def cut_full_name(name):
         """В случае превышения 25 символов, последующие символы удаляются."""
-        return name[:26]
+        return name[:25]
 
     @staticmethod
     def check_gender(gender):
@@ -229,7 +236,11 @@ class Employee(Person):
     @staticmethod
     def check_year(year):
         """Только целое число от 1950 до 2030."""
-        return 1950 <= year <= 2030 and type(year) == int
+        if year.isdigit():
+            year = int(year)
+            if 1950 <= year <= 2030:
+                return True
+        return False
 
     @staticmethod
     def check_profession(profession):
@@ -239,7 +250,11 @@ class Employee(Person):
     @staticmethod
     def check_exp(exp):
         """Целое число от 0 до 60."""
-        return 0 <= exp <= 60 and type(exp) == int
+        if exp.isdigit():
+            exp = int(exp)
+            if 0 <= exp <= 60:
+                return True
+        return False
 
     @property  # Свойство - year_graduation
     def year_graduation(self):
@@ -283,7 +298,7 @@ class Employee(Person):
         year = 'Год окончания: {}\n'.format(self.year_graduation) if self.year_graduation is not None else None
         qualification = 'Квалификация: {}\n'.format(self.qualification) if self.qualification is not None else None
         spec = 'Специализация: {}\n'.format(self.speciality) if self.speciality is not None else None
-        profession = 'Профессия: {}'.format(self.profession) if self.profession is not None else None
+        profession = 'Профессия: {}\n'.format(self.profession) if self.profession is not None else None
         exp = 'Стаж: {}\n'.format(self.work_experience) if self.work_experience is not None else None
 
         list_2 = [lang, doc, year, qualification, spec, profession, exp]
@@ -313,7 +328,7 @@ class Nurse(Employee):
         answer = super().__str__()
         service = 'Санитарная обработка помещений: {}\n'.format(self.sanitary_service)
         care = 'Уход за больными: {}\n'.format(self.patient_care)
-        procedures = 'Выполнение медицинских процедур: {}'.format(self.medical_procedures)
+        procedures = 'Выполнение медицинских процедур: {}\n'.format(self.medical_procedures)
 
         list_3 = [service, care, procedures]
         for k in list_3:
