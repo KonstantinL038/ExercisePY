@@ -171,3 +171,25 @@ class Person:
             self.__phone_number = phone
         else:
             self.__phone_number = None
+
+    def __str__(self):
+        """str representation"""
+        number = 'Номер: {}\n'.format(self.__id)
+        name = 'ФИО: {}\n'.format(self.full_name)
+        gender = 'Пол: {}\n'.format(self.gender) if self.gender is not None else None
+        birth = 'Дата рождения: {}\n'.format(self.birthday) if self.birthday is not None else None
+        place_birth = 'Место рождения: {}\n'.format(self.place_birth) if self.place_birth is not None else None
+        marriage = 'В браке: {}\n'.format(self.married) if self.married is not None else None
+        passport = 'Паспорт: {}\n'.format(self.passport) if self.passport is not None else None
+        address = 'Адрес регистрации: {}\n'.format(
+            self.residence_address) if self.residence_address is not None else None
+        edu = 'Уровень образования: {}\n'.format(self.level_education) if self.level_education is not None else None
+        phone = 'Телефон: {}\n'.format(self.phone_number) if self.phone_number is not None else None
+
+        list_1 = [number, name, gender, birth, place_birth, marriage, passport, address, edu, phone]
+        answer = ''
+        for i in list_1:
+            if i is not None:
+                answer = answer + i
+
+        return answer
