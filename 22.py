@@ -197,3 +197,32 @@ class Person:
     def __repr__(self):
         """repr representation"""
         return '{}. {}'.format(self.__id, self.full_name)
+
+
+class Employee(Person):
+
+    def __init__(self, name, gender, birth, place_birth, married, passport, res, edu, phone, lang, document, year):
+        super().__init__(name, gender, birth, place_birth, married, passport, res, edu, phone)
+        self.know_foreign_language = lang  # Знание иностранных языков
+        self.education_document = document  # Документ об образовании
+
+        if self.check_year(year):  # Дата выпуска из высшего учебного заведения. От 1950 до 2030.
+            self.__year_graduation = year
+        else:
+            self.__year_graduation = None
+
+    @staticmethod
+    def check_year(year):
+        """Только целое число от 1950 до 2030."""
+        return 1950 <= year <= 2030
+
+    @property  # Свойство - year_graduation
+    def year_graduation(self):
+        return self.__year_graduation
+
+    @year_graduation.setter
+    def year_graduation(self, year):
+        if self.check_year(year):  # Дата выпуска из высшего учебного заведения. От 1950 до 2030.
+            self.__year_graduation = year
+        else:
+            self.__year_graduation = None
