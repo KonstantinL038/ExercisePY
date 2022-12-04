@@ -193,3 +193,7 @@ class Person:
                 answer = answer + i
 
         return answer
+
+    def __repr__(self):
+        """repr representation"""
+        return '{}. {}'.format(self.__id, self.full_name)
