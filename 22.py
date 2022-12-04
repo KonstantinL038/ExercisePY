@@ -295,3 +295,32 @@ class Employee(Person):
 
     def __repr__(self):
         return super().__repr__()
+
+
+class Nurse(Employee):
+
+    def __init__(self, name, gender, birth, place_birth, married, passport, res, edu, phone, lang, document, year,
+                 qualification, speciality, profession, exp, service, care, procedures):
+
+        super().__init__(name, gender, birth, place_birth, married, passport, res, edu, phone, lang, document, year,
+                         qualification, speciality, profession, exp)
+
+        self.sanitary_service = service  # Санитарная обработка помещений
+        self.patient_care = care  # Уход за больными
+        self.medical_procedures = procedures  # Выполнение медицинских процедур
+
+    def __str__(self):
+        answer = super().__str__()
+        service = 'Санитарная обработка помещений: {}\n'.format(self.sanitary_service)
+        care = 'Уход за больными: {}\n'.format(self.patient_care)
+        procedures = 'Выполнение медицинских процедур: {}'.format(self.medical_procedures)
+
+        list_3 = [service, care, procedures]
+        for k in list_3:
+            if k is not None:
+                answer = answer + k
+
+        return answer
+
+    def __repr__(self):
+        return super().__repr__()
