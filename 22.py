@@ -202,7 +202,7 @@ class Person:
 class Employee(Person):
 
     def __init__(self, name, gender, birth, place_birth, married, passport, res, edu, phone, lang, document, year,
-                 qualification, speciality, profession):
+                 qualification, speciality, profession, exp):
         super().__init__(name, gender, birth, place_birth, married, passport, res, edu, phone)
 
         self.know_foreign_language = lang  # Знание иностранных языков
@@ -214,22 +214,32 @@ class Employee(Person):
             self.__year_graduation = None
 
         self.qualification = qualification  # Квалификация
-        self.speciality = speciality  # Специальность
+        self.speciality = speciality  # Специализация
 
         if self.check_profession(profession):  # Только строковые значения 'врач', 'медицинская сестра'
             self.__profession = profession
         else:
             self.__profession = None
 
+        if self.check_exp(exp):  # Опыт работы
+            self.__work_experience = exp
+        else:
+            self.__work_experience = None
+
     @staticmethod
     def check_year(year):
         """Только целое число от 1950 до 2030."""
-        return 1950 <= year <= 2030
+        return 1950 <= year <= 2030 and type(year) == int
 
     @staticmethod
     def check_profession(profession):
         """Только строковые значения 'врач', 'медицинская сестра'."""
         return profession in ['врач', 'медицинская сестра']
+
+    @staticmethod
+    def check_exp(exp):
+        """Целое число от 0 до 60."""
+        return 0 <= exp <= 60 and type(exp) == int
 
     @property  # Свойство - year_graduation
     def year_graduation(self):
@@ -242,7 +252,7 @@ class Employee(Person):
         else:
             self.__year_graduation = None
 
-    @property  # Свойство - профессия
+    @property  # Свойство - profession
     def profession(self):
         return self.__profession
 
@@ -252,3 +262,36 @@ class Employee(Person):
             self.__profession = profession
         else:
             self.__profession = None
+
+    @property  # Свойство - work_experience
+    def work_experience(self):
+        return self.__work_experience
+
+    @work_experience.setter
+    def work_experience(self, exp):
+        if self.check_exp(exp):  # Опыт работы
+            self.__work_experience = exp
+        else:
+            self.__work_experience = None
+
+    def __str__(self):
+        answer = super().__str__()
+        lang = 'Знание иностранного языка: {}\n'.format(self.know_foreign_language) if self.know_foreign_language is \
+            not None else None
+        doc = 'Документ об образовании: {}\n'.format(self.education_document) if self.education_document is not None \
+            else None
+        year = 'Год окончания: {}\n'.format(self.year_graduation) if self.year_graduation is not None else None
+        qualification = 'Квалификация: {}\n'.format(self.qualification) if self.qualification is not None else None
+        spec = 'Специализация: {}\n'.format(self.speciality) if self.speciality is not None else None
+        profession = 'Профессия: {}'.format(self.profession) if self.profession is not None else None
+        exp = 'Стаж: {}\n'.format(self.work_experience) if self.work_experience is not None else None
+
+        list_2 = [lang, doc, year, qualification, spec, profession, exp]
+        for j in list_2:
+            if j is not None:
+                answer = answer + j
+
+        return answer
+
+    def __repr__(self):
+        return super().__repr__()
