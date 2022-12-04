@@ -201,8 +201,10 @@ class Person:
 
 class Employee(Person):
 
-    def __init__(self, name, gender, birth, place_birth, married, passport, res, edu, phone, lang, document, year):
+    def __init__(self, name, gender, birth, place_birth, married, passport, res, edu, phone, lang, document, year,
+                 qualification, speciality, profession):
         super().__init__(name, gender, birth, place_birth, married, passport, res, edu, phone)
+
         self.know_foreign_language = lang  # Знание иностранных языков
         self.education_document = document  # Документ об образовании
 
@@ -211,10 +213,23 @@ class Employee(Person):
         else:
             self.__year_graduation = None
 
+        self.qualification = qualification  # Квалификация
+        self.speciality = speciality  # Специальность
+
+        if self.check_profession(profession):  # Только строковые значения 'врач', 'медицинская сестра'
+            self.__profession = profession
+        else:
+            self.__profession = None
+
     @staticmethod
     def check_year(year):
         """Только целое число от 1950 до 2030."""
         return 1950 <= year <= 2030
+
+    @staticmethod
+    def check_profession(profession):
+        """Только строковые значения 'врач', 'медицинская сестра'."""
+        return profession in ['врач', 'медицинская сестра']
 
     @property  # Свойство - year_graduation
     def year_graduation(self):
@@ -226,3 +241,14 @@ class Employee(Person):
             self.__year_graduation = year
         else:
             self.__year_graduation = None
+
+    @property  # Свойство - профессия
+    def profession(self):
+        return self.__profession
+
+    @profession.setter
+    def profession(self, profession):
+        if self.check_profession(profession):  # Только строковые значения 'врач', 'медицинская сестра'
+            self.__profession = profession
+        else:
+            self.__profession = None
