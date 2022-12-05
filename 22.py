@@ -441,7 +441,7 @@ class Doctor(Employee):
 class Patient(Person):
 
     def __init__(self, name, gender, birth, place_birth, married, passport, res, edu, phone, policy, status, place,
-                 blood):
+                 blood, rhesus):
         super().__init__(name, gender, birth, place_birth, married, passport, res, edu, phone)
 
         self.medical_policy = policy  # Медицинский полис
@@ -453,10 +453,37 @@ class Patient(Person):
 
         self.place_work_study = place  # Место работы, учёбы
 
+        if self.check_blood(blood):
+            self.__blood_type = int(blood)
+        else:
+            self.__blood_type = None
+
+        if self.check_rhesus(rhesus):  # Резус-фактор
+            self.__rhesus_affiliation = rhesus
+        else:
+            self.__rhesus_affiliation = None
+
     @staticmethod
     def check_status(status):
         """Только строковые значения 'рабочий', 'служащий', 'обучающийся'"""
         if status in ['рабочий', 'служащий', 'обучающийся']:
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def check_blood(blood):
+        """Целое число от 1 до 4."""
+        if blood.isdigit():
+            blood = int(blood)
+            if 1 <= blood <= 4:
+                return True
+        return False
+
+    @staticmethod
+    def check_rhesus(rhesus):
+        """Только строковые значения '+', '-'."""
+        if rhesus in ['+', '-']:
             return True
         else:
             return False
@@ -472,16 +499,24 @@ class Patient(Person):
         else:
             self.__status = None
 
-    @staticmethod
-    def check_blood(blood):
-        if blood.isdigit():
-            blood = int(blood)
+    @property  # Свойство - blood_type
+    def blood_type(self):
+        return self.__blood_type
 
+    @blood_type.setter
+    def blood_type(self, blood):
+        if self.check_blood(blood):
+            self.__blood_type = int(blood)
+        else:
+            self.__blood_type = None
 
+    @property  # Свойство - rhesus_affiliation
+    def rhesus_affiliation(self):
+        return self.__rhesus_affiliation
 
-
-load = Loader()
-load.load_doctors('doctors.txt')
-for item in range(3):
-    print(load.doctors[item])
-print(load.doctors)
+    @rhesus_affiliation.setter
+    def rhesus_affiliation(self, rhesus):
+        if self.check_rhesus(rhesus):  # Резус-фактор
+            self.__rhesus_affiliation = rhesus
+        else:
+            self.__rhesus_affiliation = None
