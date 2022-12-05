@@ -1,8 +1,5 @@
 import re
 
-# TODO в выводе заменить False и True на да, нет. Так же, чтобы у опред. переменных из файла принимались только True
-#  и False. Продолжать задание. Исправить __id - он не работает. Не считает.
-
 
 class Loader:
     hospital_patients = []
@@ -367,10 +364,37 @@ class Nurse(Employee):
         return super().__repr__()
 
 
+class Doctor(Employee):
 
-load = Loader()
+    def __init__(self, name, gender, birth, place_birth, married, passport, res, edu, phone, lang, document, year,
+                 qualification, speciality, profession, exp, degree, rank, category):
 
-load.load_nurses('nurses.txt')
-for item in range(3):
-    print(load.nurses[item])
-print(load.nurses)
+        super().__init__(name, gender, birth, place_birth, married, passport, res, edu, phone, lang, document, year,
+                         qualification, speciality, profession, exp)
+
+        self.academic_degree = self.check_bool(degree)  # Академическая степень
+        self.academic_rank = self.check_bool(rank)  # Академический ранг
+
+        if self.check_category(category):  # Только строковые значения 'высшая', 'первая', 'вторая'.
+            self.__category = category
+        else:
+            self.__category = None
+
+    @staticmethod
+    def check_category(item_3):
+        """Только строковые значения 'высшая', 'первая', 'вторая'."""
+        if item_3 in ['высшая', 'первая', 'вторая']:
+            return True
+        else:
+            return False
+
+    @property  # Свойство - category
+    def category(self):
+        return self.__category
+
+    @category.setter
+    def category(self, category):
+        if self.check_category(category):  # Только строковые значения 'высшая', 'первая', 'вторая'.
+            self.__category = category
+        else:
+            self.__category = None
