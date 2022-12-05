@@ -436,3 +436,35 @@ class Doctor(Employee):
 
     def __repr__(self):
         return super().__repr__()
+
+
+class Patient(Person):
+
+    def __init__(self, name, gender, birth, place_birth, married, passport, res, edu, phone, policy, status):
+        super().__init__(name, gender, birth, place_birth, married, passport, res, edu, phone)
+
+        self.medical_policy = policy  # Медицинский полис
+
+        if self.check_status(status):  # Статус(вид занятости)
+            self.__status = status
+        else:
+            self.__status = None
+
+    @staticmethod
+    def check_status(status):
+        """Только строковые значения 'рабочий', 'служащий', 'обучающийся'"""
+        if status in ['рабочий', 'служащий', 'обучающийся']:
+            return True
+        else:
+            return False
+
+    @property  # Свойство - status
+    def status(self):
+        return self.__status
+
+    @status.setter
+    def status(self, status):
+        if self.check_status(status):  # Статус(вид занятости)
+            self.__status = status
+        else:
+            self.__status = None
