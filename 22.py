@@ -367,7 +367,8 @@ class Nurse(Employee):
 class Doctor(Employee):
 
     def __init__(self, name, gender, birth, place_birth, married, passport, res, edu, phone, lang, document, year,
-                 qualification, speciality, profession, exp, degree, rank, category):
+                 qualification, speciality, profession, exp, degree, rank, category, trainings, errors, diagnosis,
+                 treatment, rehab):
 
         super().__init__(name, gender, birth, place_birth, married, passport, res, edu, phone, lang, document, year,
                          qualification, speciality, profession, exp)
@@ -379,6 +380,12 @@ class Doctor(Employee):
             self.__category = category
         else:
             self.__category = None
+
+        self.trainings = self.check_bool(trainings)  # Повышение квалификации
+        self.medical_errors = errors  # Врачебные ошибки
+        self.diagnosis_patients = self.check_bool(diagnosis)  # Выполнение диагностики заболеваний
+        self.treatment_patients = self.check_bool(treatment)  # Лечебная практика:
+        self.rehabilitation_patients = self.check_bool(rehab)  # Реабилитация больных
 
     @staticmethod
     def check_category(item_3):
@@ -398,3 +405,4 @@ class Doctor(Employee):
             self.__category = category
         else:
             self.__category = None
+
