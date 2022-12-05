@@ -25,7 +25,11 @@ class Loader:
 
     @classmethod
     def load_doctors(cls, file_name):
-        pass
+        with open(file_name, 'r', encoding='utf-8') as file_2:
+            for line in file_2:
+                line = line.strip().split(';')[:-1]
+                doctor = Doctor(*line)
+                cls.doctors.append(doctor)
 
 
 class Person:
