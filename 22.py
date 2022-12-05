@@ -406,3 +406,29 @@ class Doctor(Employee):
         else:
             self.__category = None
 
+    def __str__(self):
+        answer = super().__str__()
+
+        degree = 'Ученая степень: {}\n'.format(self.print_yes_no(self.academic_degree)) if self.academic_degree is not \
+            None else None
+        rank = 'Ученое звание: {}\n'.format(self.print_yes_no(self.academic_rank)) if self.academic_rank is not None \
+            else None
+        category = 'Категория: {}\n'.format(self.category) if self.category is not None else None
+        trainings = 'Повышение квалификации: {}\n'.format(self.print_yes_no(self.trainings)) if self.trainings is not \
+            None else None
+        errors = 'Врачебные ошибки: {}\n'.format(self.medical_errors) if self.medical_errors is not None else None
+        diagnosis = 'Выполнение диагностики заболеваний: {}\n'.format(self.print_yes_no(self.diagnosis_patients)) if \
+            self.diagnosis_patients is not None else None
+        treatment = 'Лечебная практика: {}\n'.format(self.print_yes_no(self.treatment_patients)) if \
+            self.treatment_patients is not None else None
+        rehab = 'Реабилитация больных: {}\n'.format(self.print_yes_no(self.rehabilitation_patients)) if \
+            self.rehabilitation_patients is not None else None
+
+        list_4 = [degree, rank, category, trainings, errors, diagnosis, treatment, rehab]
+        for t in list_4:
+            if t is not None:
+                answer = answer + t
+        return answer
+
+    def __repr__(self):
+        return super().__repr__()
