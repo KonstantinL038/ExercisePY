@@ -667,3 +667,20 @@ class AmbulatoryPatient(Patient):
             self.__health_group = group
         else:
             self.__health_group = None
+
+    def __str__(self):
+        answer = super().__str__()
+        number = 'Участок: {}\n'.format(self.territorial_number) if self.territorial_number is not None else None
+        disability = 'Группа инвалидности: {}\n'.format(self.disability) if (self.disability != 0 and self.disability
+                                                                             is not None) else None
+        group = 'Группа здоровья: {}\n'.format(self.health_group) if self.health_group is not None else None
+        chronic = 'Хронический диагноз: {}\n'.format(self.chronic_diagnosis) if self.chronic_diagnosis is not None \
+            else None
+        list_7 = [number, disability, group, chronic]
+        for k in list_7:
+            if k is not None:
+                answer = answer + k
+        return answer
+
+    def __repr__(self):
+        return super().__repr__()
