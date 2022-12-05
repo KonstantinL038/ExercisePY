@@ -528,17 +528,55 @@ class Patient(Person):
 
         policy = 'Медицинский полис: {}\n'.format(self.medical_policy) if self.medical_policy is not None else None
         status = 'Статус: {}\n'.format(self.status) if self.status is not None else None
-        place = 'Место работы (учебы): {}'.format(self.place_work_study) if self.place_work_study is not None else None
-        blood = 'Группа крови: {}({})'.format(self.blood_type, self.rhesus_affiliation) if (self.blood_type is not None
+        place = 'Место работы (учебы): {}\n'.format(self.place_work_study) if self.place_work_study is not None else None
+        blood = 'Группа крови: {}({})\n'.format(self.blood_type, self.rhesus_affiliation) if (self.blood_type is not None
                                                                                             and self.rhesus_affiliation
                                                                                             is not None) else None
-        allergy = 'Аллергические реакции: {}'.format(self.allergic_reactions) if self.allergic_reactions is not None \
+        allergy = 'Аллергические реакции: {}\n'.format(self.allergic_reactions) if self.allergic_reactions is not None \
             else None
 
         list_5 = [policy, status, place, blood, allergy]
         for i in list_5:
             if i is not None:
                 answer = answer + i
+        return answer
+
+    def __repr__(self):
+        return super().__repr__()
+
+
+class HospitalPatient(Patient):
+
+    def __init__(self, name, gender, birth, place_birth, married, passport, res, edu, phone, policy, status, place,
+                 blood, rhesus, allergy, department, room, clinic):
+        super().__init__(name, gender, birth, place_birth, married, passport, res, edu, phone, policy, status, place,
+                         blood, rhesus, allergy)
+
+        self.medical_department = department  # Отделение
+        self.room_number = self.turn_room(room)  # Номер палаты
+
+        if clinic != 'Не выявлено':
+            self.clinical_diagnosis = clinic  # Диагноз
+        else:
+            self.clinical_diagnosis = None
+
+    @staticmethod
+    def turn_room(room):
+        if room.isdigit():
+            return int(room)
+        return None
+
+    def __str__(self):
+        answer = super().__str__()
+        department = 'Отделение: {}\n'.format(self.medical_department) if self.medical_department is not None else None
+        room = 'Палата: {}\n'.format(self.room_number) if self.room_number is not None else None
+        clinic = 'Клинический диагноз: {}\n'.format(self.clinical_diagnosis) if self.clinical_diagnosis is not None \
+            else None
+
+        list_6 = [department, room, clinic]
+        for j in list_6:
+            if j is not None:
+                answer = answer + j
         return answer
 
     def __repr__(self):
