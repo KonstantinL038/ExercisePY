@@ -9,7 +9,11 @@ class Loader:
 
     @classmethod
     def load_hospital_patients(cls, file_name):
-        pass
+        with open(file_name, 'r', encoding='utf-8') as file_3:
+            for line in file_3:
+                line = line.strip().split(';')[:-1]
+                patient_1 = HospitalPatient(*line)
+                cls.hospital_patients.append(patient_1)
 
     @classmethod
     def load_ambulatory_patients(cls, file_name):
