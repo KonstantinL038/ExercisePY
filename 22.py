@@ -441,7 +441,7 @@ class Doctor(Employee):
 class Patient(Person):
 
     def __init__(self, name, gender, birth, place_birth, married, passport, res, edu, phone, policy, status, place,
-                 blood, rhesus):
+                 blood, rhesus, allergy):
         super().__init__(name, gender, birth, place_birth, married, passport, res, edu, phone)
 
         self.medical_policy = policy  # Медицинский полис
@@ -462,6 +462,8 @@ class Patient(Person):
             self.__rhesus_affiliation = rhesus
         else:
             self.__rhesus_affiliation = None
+
+        self.allergic_reactions = allergy  # Аллергия
 
     @staticmethod
     def check_status(status):
@@ -520,3 +522,24 @@ class Patient(Person):
             self.__rhesus_affiliation = rhesus
         else:
             self.__rhesus_affiliation = None
+
+    def __str__(self):
+        answer = super().__str__()
+
+        policy = 'Медицинский полис: {}\n'.format(self.medical_policy) if self.medical_policy is not None else None
+        status = 'Статус: {}\n'.format(self.status) if self.status is not None else None
+        place = 'Место работы (учебы): {}'.format(self.place_work_study) if self.place_work_study is not None else None
+        blood = 'Группа крови: {}({})'.format(self.blood_type, self.rhesus_affiliation) if (self.blood_type is not None
+                                                                                            and self.rhesus_affiliation
+                                                                                            is not None) else None
+        allergy = 'Аллергические реакции: {}'.format(self.allergic_reactions) if self.allergic_reactions is not None \
+            else None
+
+        list_5 = [policy, status, place, blood, allergy]
+        for i in list_5:
+            if i is not None:
+                answer = answer + i
+        return answer
+
+    def __repr__(self):
+        return super().__repr__()
