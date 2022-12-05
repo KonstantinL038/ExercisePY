@@ -240,7 +240,7 @@ class Employee(Person):
         self.education_document = document  # Документ об образовании
 
         if self.check_year(year):  # Дата выпуска из высшего учебного заведения. От 1950 до 2030.
-            self.__year_graduation = year
+            self.__year_graduation = int(year)
         else:
             self.__year_graduation = None
 
@@ -253,7 +253,7 @@ class Employee(Person):
             self.__profession = None
 
         if self.check_exp(exp):  # Опыт работы
-            self.__work_experience = exp
+            self.__work_experience = int(exp)
         else:
             self.__work_experience = None
 
@@ -287,7 +287,7 @@ class Employee(Person):
     @year_graduation.setter
     def year_graduation(self, year):
         if self.check_year(year):  # Дата выпуска из высшего учебного заведения. От 1950 до 2030.
-            self.__year_graduation = year
+            self.__year_graduation = int(year)
         else:
             self.__year_graduation = None
 
@@ -309,7 +309,7 @@ class Employee(Person):
     @work_experience.setter
     def work_experience(self, exp):
         if self.check_exp(exp):  # Опыт работы
-            self.__work_experience = exp
+            self.__work_experience = int(exp)
         else:
             self.__work_experience = None
 
@@ -440,7 +440,8 @@ class Doctor(Employee):
 
 class Patient(Person):
 
-    def __init__(self, name, gender, birth, place_birth, married, passport, res, edu, phone, policy, status):
+    def __init__(self, name, gender, birth, place_birth, married, passport, res, edu, phone, policy, status, place,
+                 blood):
         super().__init__(name, gender, birth, place_birth, married, passport, res, edu, phone)
 
         self.medical_policy = policy  # Медицинский полис
@@ -449,6 +450,8 @@ class Patient(Person):
             self.__status = status
         else:
             self.__status = None
+
+        self.place_work_study = place  # Место работы, учёбы
 
     @staticmethod
     def check_status(status):
@@ -468,3 +471,17 @@ class Patient(Person):
             self.__status = status
         else:
             self.__status = None
+
+    @staticmethod
+    def check_blood(blood):
+        if blood.isdigit():
+            blood = int(blood)
+
+
+
+
+load = Loader()
+load.load_doctors('doctors.txt')
+for item in range(3):
+    print(load.doctors[item])
+print(load.doctors)
