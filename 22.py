@@ -32,10 +32,13 @@ class Loader:
 
 
 class Person:
-    __id = 0
+    __global_int = 1
 
     def __init__(self, name, gender, birth, place_birth, married, passport, res, edu, phone):
-        self.__id += 1  # Номер экземпляра
+
+        self.__id = Person.__global_int
+        Person.__global_int += 1  # Нумерация
+
         self.__full_name = self.cut_full_name(name)  # Имя обрезанное до 25 символов
 
         if self.check_gender(gender):  # Определяем гендер - допустимое только "муж." и "жен."
@@ -49,7 +52,7 @@ class Person:
             self.__birthday = None
 
         self.place_birth = place_birth  # Место рождения
-        self.married = married  # Информация о том находится ли в браке человек
+        self.married = self.check_bool(married)  # Информация о том находится ли в браке человек
 
         if self.check_passport(passport):  # Определяем данные паспорта
             self.__passport = passport
@@ -72,6 +75,26 @@ class Person:
     def cut_full_name(name):
         """В случае превышения 25 символов, последующие символы удаляются."""
         return name[:25]
+
+    @staticmethod
+    def check_bool(item_1):
+        """Проверяет соответствие и приводит к bool"""
+        if item_1 == 'False':
+            item_1 = False
+            return item_1
+        elif item_1 == 'True':
+            item_1 = True
+            return item_1
+        else:
+            return None
+
+    @staticmethod
+    def print_yes_no(item_2):
+        """Выводит да или нет"""
+        if item_2:
+            return 'да'
+        else:
+            return 'нет'
 
     @staticmethod
     def check_gender(gender):
@@ -186,7 +209,7 @@ class Person:
         gender = 'Пол: {}\n'.format(self.gender) if self.gender is not None else None
         birth = 'Дата рождения: {}\n'.format(self.birthday) if self.birthday is not None else None
         place_birth = 'Место рождения: {}\n'.format(self.place_birth) if self.place_birth is not None else None
-        marriage = 'В браке: {}\n'.format(self.married) if self.married is not None else None
+        marriage = 'В браке: {}\n'.format(self.print_yes_no(self.married)) if self.married is not None else None
         passport = 'Паспорт: {}\n'.format(self.passport) if self.passport is not None else None
         address = 'Адрес регистрации: {}\n'.format(
             self.residence_address) if self.residence_address is not None else None
@@ -212,7 +235,7 @@ class Employee(Person):
                  qualification, speciality, profession, exp):
         super().__init__(name, gender, birth, place_birth, married, passport, res, edu, phone)
 
-        self.know_foreign_language = lang  # Знание иностранных языков
+        self.know_foreign_language = self.check_bool(lang)  # Знание иностранных языков
         self.education_document = document  # Документ об образовании
 
         if self.check_year(year):  # Дата выпуска из высшего учебного заведения. От 1950 до 2030.
@@ -291,8 +314,8 @@ class Employee(Person):
 
     def __str__(self):
         answer = super().__str__()
-        lang = 'Знание иностранного языка: {}\n'.format(self.know_foreign_language) if self.know_foreign_language is \
-            not None else None
+        lang = 'Знание иностранного языка: {}\n'.format(self.print_yes_no(self.know_foreign_language)) if \
+            self.know_foreign_language is not None else None
         doc = 'Документ об образовании: {}\n'.format(self.education_document) if self.education_document is not None \
             else None
         year = 'Год окончания: {}\n'.format(self.year_graduation) if self.year_graduation is not None else None
@@ -320,15 +343,18 @@ class Nurse(Employee):
         super().__init__(name, gender, birth, place_birth, married, passport, res, edu, phone, lang, document, year,
                          qualification, speciality, profession, exp)
 
-        self.sanitary_service = service  # Санитарная обработка помещений
-        self.patient_care = care  # Уход за больными
-        self.medical_procedures = procedures  # Выполнение медицинских процедур
+        self.sanitary_service = self.check_bool(service)  # Санитарная обработка помещений
+        self.patient_care = self.check_bool(care)  # Уход за больными
+        self.medical_procedures = self.check_bool(procedures)  # Выполнение медицинских процедур
 
     def __str__(self):
         answer = super().__str__()
-        service = 'Санитарная обработка помещений: {}\n'.format(self.sanitary_service)
-        care = 'Уход за больными: {}\n'.format(self.patient_care)
-        procedures = 'Выполнение медицинских процедур: {}\n'.format(self.medical_procedures)
+        service = 'Санитарная обработка помещений: {}\n'.format(self.print_yes_no(self.sanitary_service)) if \
+            self.sanitary_service is not None else None
+        care = 'Уход за больными: {}\n'.format(self.print_yes_no(self.patient_care)) if self.patient_care is not None \
+            else None
+        procedures = 'Выполнение медицинских процедур: {}\n'.format(self.print_yes_no(self.medical_procedures)) if \
+            self.medical_procedures is not None else None
 
         list_3 = [service, care, procedures]
         for k in list_3:
@@ -339,3 +365,12 @@ class Nurse(Employee):
 
     def __repr__(self):
         return super().__repr__()
+
+
+
+load = Loader()
+
+load.load_nurses('nurses.txt')
+for item in range(3):
+    print(load.nurses[item])
+print(load.nurses)
