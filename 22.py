@@ -418,12 +418,12 @@ class Doctor(Employee):
         answer = super().__str__()
 
         degree = 'Ученая степень: {}\n'.format(self.print_yes_no(self.academic_degree)) if self.academic_degree is not \
-            None else None
+                                                                                           None else None
         rank = 'Ученое звание: {}\n'.format(self.print_yes_no(self.academic_rank)) if self.academic_rank is not None \
             else None
         category = 'Категория: {}\n'.format(self.category) if self.category is not None else None
         trainings = 'Повышение квалификации: {}\n'.format(self.print_yes_no(self.trainings)) if self.trainings is not \
-            None else None
+                                                                                                None else None
         errors = 'Врачебные ошибки: {}\n'.format(self.medical_errors) if self.medical_errors is not None else None
         diagnosis = 'Выполнение диагностики заболеваний: {}\n'.format(self.print_yes_no(self.diagnosis_patients)) if \
             self.diagnosis_patients is not None else None
@@ -532,10 +532,12 @@ class Patient(Person):
 
         policy = 'Медицинский полис: {}\n'.format(self.medical_policy) if self.medical_policy is not None else None
         status = 'Статус: {}\n'.format(self.status) if self.status is not None else None
-        place = 'Место работы (учебы): {}\n'.format(self.place_work_study) if self.place_work_study is not None else None
-        blood = 'Группа крови: {}({})\n'.format(self.blood_type, self.rhesus_affiliation) if (self.blood_type is not None
-                                                                                            and self.rhesus_affiliation
-                                                                                            is not None) else None
+        place = 'Место работы (учебы): {}\n'.format(
+            self.place_work_study) if self.place_work_study is not None else None
+        blood = 'Группа крови: {}({})\n'.format(self.blood_type, self.rhesus_affiliation) if (
+                    self.blood_type is not None
+                    and self.rhesus_affiliation
+                    is not None) else None
         allergy = 'Аллергические реакции: {}\n'.format(self.allergic_reactions) if self.allergic_reactions is not None \
             else None
 
@@ -558,11 +560,7 @@ class HospitalPatient(Patient):
 
         self.medical_department = department  # Отделение
         self.room_number = self.turn_room(room)  # Номер палаты
-
-        if clinic != 'Не выявлено':
-            self.clinical_diagnosis = clinic  # Диагноз
-        else:
-            self.clinical_diagnosis = None
+        self.clinical_diagnosis = clinic  # Диагноз
 
     @staticmethod
     def turn_room(room):
@@ -574,8 +572,8 @@ class HospitalPatient(Patient):
         answer = super().__str__()
         department = 'Отделение: {}\n'.format(self.medical_department) if self.medical_department is not None else None
         room = 'Палата: {}\n'.format(self.room_number) if self.room_number is not None else None
-        clinic = 'Клинический диагноз: {}\n'.format(self.clinical_diagnosis) if self.clinical_diagnosis is not None \
-            else None
+        clinic = 'Клинический диагноз: {}\n'.format(self.clinical_diagnosis) if self.clinical_diagnosis is not \
+            'Не выявлено' else None
 
         list_6 = [department, room, clinic]
         for j in list_6:
@@ -590,7 +588,7 @@ class HospitalPatient(Patient):
 class AmbulatoryPatient(Patient):
 
     def __init__(self, name, gender, birth, place_birth, married, passport, res, edu, phone, policy, status, place,
-                 blood, rhesus, allergy, number):
+                 blood, rhesus, allergy, number, disability, group, chronic):
         super().__init__(name, gender, birth, place_birth, married, passport, res, edu, phone, policy, status, place,
                          blood, rhesus, allergy)
 
@@ -599,13 +597,43 @@ class AmbulatoryPatient(Patient):
         else:
             self.__territorial_number = None
 
+        if self.check_disability(disability):  # Группа инвалидности
+            self.__disability = int(disability)
+        else:
+            self.__disability = None
+
+        if self.check_group(group):  # Группа здоровья
+            self.__health_group = group
+        else:
+            self.__health_group = None
+
+        self.chronic_diagnosis = chronic  # Хронические заболевания
+
     @staticmethod
     def check_number(number):
+        """Целое число от 1 до 20."""
         if number.isdigit():
             number = int(number)
             if 1 <= number <= 20:
                 return True
         return False
+
+    @staticmethod
+    def check_disability(disability):
+        """Целое число от 0 до 3."""
+        if disability.isdigit():
+            disability = int(disability)
+            if 0 <= disability <= 3:
+                return True
+        return False
+
+    @staticmethod
+    def check_group(group):
+        """ Только строковые значения 'I', 'II', 'III'."""
+        if group in ['I', 'II', 'III']:
+            return True
+        else:
+            return False
 
     @property  # Свойство - territorial_number
     def territorial_number(self):
@@ -617,3 +645,25 @@ class AmbulatoryPatient(Patient):
             self.__territorial_number = int(number)
         else:
             self.__territorial_number = None
+
+    @property  # Свойство - disability
+    def disability(self):
+        return self.__disability
+
+    @disability.setter
+    def disability(self, disability):
+        if self.check_disability(disability):  # Группа инвалидности
+            self.__disability = int(disability)
+        else:
+            self.__disability = None
+
+    @property
+    def health_group(self):
+        return self.__health_group
+
+    @health_group.setter
+    def health_group(self, group):
+        if self.check_group(group):  # Группа здоровья
+            self.__health_group = group
+        else:
+            self.__health_group = None
