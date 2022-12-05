@@ -576,8 +576,8 @@ class HospitalPatient(Patient):
         answer = super().__str__()
         department = 'Отделение: {}\n'.format(self.medical_department) if self.medical_department is not None else None
         room = 'Палата: {}\n'.format(self.room_number) if self.room_number is not None else None
-        clinic = 'Клинический диагноз: {}\n'.format(self.clinical_diagnosis) if self.clinical_diagnosis is not \
-            'Не выявлено' else None
+        clinic = 'Клинический диагноз: {}\n'.format(self.clinical_diagnosis) if self.clinical_diagnosis != 'Не выявлено'\
+            else None
 
         list_6 = [department, room, clinic]
         for j in list_6:
@@ -678,7 +678,7 @@ class AmbulatoryPatient(Patient):
         disability = 'Группа инвалидности: {}\n'.format(self.disability) if (self.disability != 0 and self.disability
                                                                              is not None) else None
         group = 'Группа здоровья: {}\n'.format(self.health_group) if self.health_group is not None else None
-        chronic = 'Хронический диагноз: {}\n'.format(self.chronic_diagnosis) if self.chronic_diagnosis is not None \
+        chronic = 'Хронический диагноз: {}\n'.format(self.chronic_diagnosis) if self.chronic_diagnosis != 'Не выявлено'\
             else None
         list_7 = [number, disability, group, chronic]
         for k in list_7:
