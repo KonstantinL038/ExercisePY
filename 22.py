@@ -585,3 +585,35 @@ class HospitalPatient(Patient):
 
     def __repr__(self):
         return super().__repr__()
+
+
+class AmbulatoryPatient(Patient):
+
+    def __init__(self, name, gender, birth, place_birth, married, passport, res, edu, phone, policy, status, place,
+                 blood, rhesus, allergy, number):
+        super().__init__(name, gender, birth, place_birth, married, passport, res, edu, phone, policy, status, place,
+                         blood, rhesus, allergy)
+
+        if self.check_number(number):  # Участок
+            self.__territorial_number = int(number)
+        else:
+            self.__territorial_number = None
+
+    @staticmethod
+    def check_number(number):
+        if number.isdigit():
+            number = int(number)
+            if 1 <= number <= 20:
+                return True
+        return False
+
+    @property  # Свойство - territorial_number
+    def territorial_number(self):
+        return self.__territorial_number
+
+    @territorial_number.setter
+    def territorial_number(self, number):
+        if self.check_number(number):  # Участок
+            self.__territorial_number = int(number)
+        else:
+            self.__territorial_number = None
