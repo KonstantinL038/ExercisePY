@@ -6,7 +6,10 @@ class Load:
 
     @classmethod
     def write(cls, fl_meet, fl_pers, fl_pers_meet):
-        pass
+        with open(fl_meet, 'r', encoding='utf-8') as file_1:
+            first_line = file_1.readline()
+            for i in file_1:
+                meet = Meeting(*i.strip().split(';')[:-1])
 
 
 class Date:
@@ -153,10 +156,38 @@ class User:
 
 
 class Meeting:
-    __id = 1
+    lst_meeting = []
 
-    def __init__(self, date, title):
-        self.id = Meeting.__id  # ID
-        Meeting.__id += 1
+    def __init__(self, id, date, title):
+        self.id = id  # ID
         self.date = Date(date)  # Дата
         self.title = title      # Название мероприятия
+        self.employees = []  # Список сотрудников
+        Meeting.lst_meeting.append(self)
+
+    def add_person(self, person):
+        """добавить сотрудника person"""
+        self.employees.append(person)
+
+    @classmethod
+    def total(cls):
+        """Общее количество всех участников на всех конференциях."""
+        return len(cls.lst_meeting)
+
+    @classmethod
+    def count_meeting(cls, date):
+        """Количество встреч на указанную дату date"""
+        total = 0
+        for i in cls.lst_meeting:
+            if i.date == Date(date):
+                total += 1
+        return total
+
+    def __str__(self):
+        return 'Рабочая встреча {}\n{} {}'.format(self.id, self.date, self.title)
+
+
+# Load.write('meetings.txt', 'persons.txt', 'pers_meetings.txt')
+# for item in Meeting.lst_meeting:
+#     print(item)
+
