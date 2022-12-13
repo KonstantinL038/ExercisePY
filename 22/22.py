@@ -2,46 +2,51 @@ import re
 
 
 class Loader:
-    hospital_patients = []
-    ambulatory_patients = []
-    nurses = []
-    doctors = []
+    """This class download info from files into class attributes: list"""
+    hospital_patients: list = []
+    ambulatory_patients: list = []
+    nurses: list = []
+    doctors: list = []
 
     @classmethod
     def load_hospital_patients(cls, file_name):
+        """Download from 'hospital' file"""
         with open(file_name, 'r', encoding='utf-8') as file_3:
             for line in file_3:
                 line = line.strip().split(';')[:-1]
-                patient_1 = HospitalPatient(*line)
+                patient_1: HospitalPatient = HospitalPatient(*line)
                 cls.hospital_patients.append(patient_1)
 
     @classmethod
     def load_ambulatory_patients(cls, file_name):
+        """Download from 'ambulatory' file"""
         with open(file_name, 'r', encoding='utf-8') as file_1:
             for line in file_1:
                 line = line.strip().split(';')[:-1]
-                patient_2 = AmbulatoryPatient(*line)
+                patient_2: AmbulatoryPatient = AmbulatoryPatient(*line)
                 cls.ambulatory_patients.append(patient_2)
 
     @classmethod
     def load_nurses(cls, file_name):
+        """Download from 'nurses' file"""
         with open(file_name, 'r', encoding='utf-8') as file_4:
             for line in file_4:
                 line = line.strip().split(';')[:-1]
-                nurse = Nurse(*line)
+                nurse: Nurse = Nurse(*line)
                 cls.nurses.append(nurse)
 
     @classmethod
     def load_doctors(cls, file_name):
+        """Download from 'doctors' file"""
         with open(file_name, 'r', encoding='utf-8') as file_2:
             for line in file_2:
                 line = line.strip().split(';')[:-1]
-                doctor = Doctor(*line)
+                doctor: Doctor = Doctor(*line)
                 cls.doctors.append(doctor)
 
 
 class Person:
-    __global_int = 1
+    __global_int: int = 1
 
     def __init__(self, name, gender, birth, place_birth, married, passport, res, edu, phone):
 
@@ -82,12 +87,12 @@ class Person:
 
     @staticmethod
     def cut_full_name(name):
-        """В случае превышения 25 символов, последующие символы удаляются."""
+        """In case of exceeding 25 characters, subsequent characters are deleted."""
         return name[:25]
 
     @staticmethod
     def check_bool(item_1):
-        """Проверяет соответствие и приводит к bool"""
+        """Checks for compliance and leads to bool"""
         if item_1 == 'False':
             item_1 = False
             return item_1
@@ -99,7 +104,7 @@ class Person:
 
     @staticmethod
     def print_yes_no(item_2):
-        """Выводит да или нет"""
+        """Outputs 'да' or 'нет'"""
         if item_2:
             return 'да'
         else:
@@ -107,7 +112,7 @@ class Person:
 
     @staticmethod
     def check_gender(gender):
-        """Только строковые значения 'муж.' или 'жен.'"""
+        """String values only 'муж.' or 'жен.'"""
         if gender == 'муж.' or gender == 'жен.':
             return True
         else:
@@ -115,7 +120,7 @@ class Person:
 
     @staticmethod
     def check_date(birth):
-        """Только строка из 10 символов следующего формата: 99.99.9999, где 9 - любая цифра."""
+        """Only a string of 10 characters in the following format: 99.99.9999, where 9 is any digit."""
         if len(birth) == 10:
             if birth.find('.') != -1:
                 birth = birth.split('.')
@@ -126,7 +131,7 @@ class Person:
         return False
 
     def check_passport(self, passport):
-        """Только строка из 22 символов следующего формата: 9999 999999 99.99.9999, где 9 - любая цифра."""
+        """Only a string of 22 characters in the following format: 9999 999999 99.99.9999, where 9 is any digit."""
         if len(passport) == 22:
             passport = passport.split(' ')
             if len(passport[0]) == 4 and passport[0].isdigit():
@@ -137,7 +142,7 @@ class Person:
 
     @staticmethod
     def check_education(edu):
-        """Только строковые значения 'высшее', 'ср.спец', 'среднее'."""
+        """String values only 'высшее', 'ср.спец', 'среднее'."""
         if edu in ['высшее', 'ср.спец', 'среднее']:
             return True
         else:
@@ -145,7 +150,7 @@ class Person:
 
     @staticmethod
     def check_phone(phone):
-        """Только строка из 16 символов следующего формата: +7(999)999-99-99, где 9 - любая цифра."""
+        """Only a string of 16 characters in the following format: +7(999)999-99-99, where 9 is any digit."""
         return bool(re.match(r'\+7\(\d{3}\)\d{3}-\d{2}-\d{2}', phone))
 
     @property  # Свойство - full_name
@@ -267,7 +272,7 @@ class Employee(Person):
 
     @staticmethod
     def check_year(year):
-        """Только целое число от 1950 до 2030."""
+        """Only an integer from 1950 to 2030."""
         if year.isdigit():
             year = int(year)
             if 1950 <= year <= 2030:
@@ -276,12 +281,12 @@ class Employee(Person):
 
     @staticmethod
     def check_profession(profession):
-        """Только строковые значения 'врач', 'медицинская сестра'."""
+        """String values only 'врач', 'медицинская сестра'."""
         return profession in ['врач', 'медицинская сестра']
 
     @staticmethod
     def check_exp(exp):
-        """Целое число от 0 до 60."""
+        """An integer from 0 to 60."""
         if exp.isdigit():
             exp = int(exp)
             if 0 <= exp <= 60:
@@ -322,6 +327,7 @@ class Employee(Person):
             self.__work_experience = None
 
     def __str__(self):
+        """str representation"""
         answer = super().__str__()
         lang = 'Знание иностранного языка: {}\n'.format(self.print_yes_no(self.know_foreign_language)) if \
             self.know_foreign_language is not None else None
@@ -357,6 +363,7 @@ class Nurse(Employee):
         self.medical_procedures = self.check_bool(procedures)  # Выполнение медицинских процедур
 
     def __str__(self):
+        """str representation"""
         answer = super().__str__()
         service = 'Санитарная обработка помещений: {}\n'.format(self.print_yes_no(self.sanitary_service)) if \
             self.sanitary_service is not None else None
@@ -401,7 +408,7 @@ class Doctor(Employee):
 
     @staticmethod
     def check_category(item_3):
-        """Только строковые значения 'высшая', 'первая', 'вторая'."""
+        """String values only 'высшая', 'первая', 'вторая'."""
         if item_3 in ['высшая', 'первая', 'вторая']:
             return True
         else:
@@ -419,15 +426,16 @@ class Doctor(Employee):
             self.__category = None
 
     def __str__(self):
+        """str representation"""
         answer = super().__str__()
 
         degree = 'Ученая степень: {}\n'.format(self.print_yes_no(self.academic_degree)) if self.academic_degree is not \
-                                                                                           None else None
+            None else None
         rank = 'Ученое звание: {}\n'.format(self.print_yes_no(self.academic_rank)) if self.academic_rank is not None \
             else None
         category = 'Категория: {}\n'.format(self.category) if self.category is not None else None
         trainings = 'Повышение квалификации: {}\n'.format(self.print_yes_no(self.trainings)) if self.trainings is not \
-                                                                                                None else None
+                    None else None
         errors = 'Врачебные ошибки: {}\n'.format(self.medical_errors) if self.medical_errors is not None else None
         diagnosis = 'Выполнение диагностики заболеваний: {}\n'.format(self.print_yes_no(self.diagnosis_patients)) if \
             self.diagnosis_patients is not None else None
@@ -475,7 +483,7 @@ class Patient(Person):
 
     @staticmethod
     def check_status(status):
-        """Только строковые значения 'рабочий', 'служащий', 'обучающийся'"""
+        """String values only 'рабочий', 'служащий', 'обучающийся'"""
         if status in ['рабочий', 'служащий', 'обучающийся']:
             return True
         else:
@@ -483,7 +491,7 @@ class Patient(Person):
 
     @staticmethod
     def check_blood(blood):
-        """Целое число от 1 до 4."""
+        """An integer from 1 to 4."""
         if blood.isdigit():
             blood = int(blood)
             if 1 <= blood <= 4:
@@ -492,7 +500,7 @@ class Patient(Person):
 
     @staticmethod
     def check_rhesus(rhesus):
-        """Только строковые значения '+', '-'."""
+        """String values only '+', '-'."""
         if rhesus in ['+', '-']:
             return True
         else:
@@ -532,6 +540,7 @@ class Patient(Person):
             self.__rhesus_affiliation = None
 
     def __str__(self):
+        """str representation"""
         answer = super().__str__()
 
         policy = 'Медицинский полис: {}\n'.format(self.medical_policy) if self.medical_policy is not None else None
@@ -539,9 +548,9 @@ class Patient(Person):
         place = 'Место работы (учебы): {}\n'.format(
             self.place_work_study) if self.place_work_study is not None else None
         blood = 'Группа крови: {}({})\n'.format(self.blood_type, self.rhesus_affiliation) if (
-                    self.blood_type is not None
-                    and self.rhesus_affiliation
-                    is not None) else None
+                self.blood_type is not None
+                and self.rhesus_affiliation
+                is not None) else None
         allergy = 'Аллергические реакции: {}\n'.format(self.allergic_reactions) if self.allergic_reactions is not None \
             else None
 
@@ -573,11 +582,12 @@ class HospitalPatient(Patient):
         return None
 
     def __str__(self):
+        """str representation"""
         answer = super().__str__()
         department = 'Отделение: {}\n'.format(self.medical_department) if self.medical_department is not None else None
         room = 'Палата: {}\n'.format(self.room_number) if self.room_number is not None else None
-        clinic = 'Клинический диагноз: {}\n'.format(self.clinical_diagnosis) if self.clinical_diagnosis != 'Не выявлено'\
-            else None
+        clinic = 'Клинический диагноз: {}\n'.format(self.clinical_diagnosis) if self.clinical_diagnosis != \
+            'Не выявлено' else None
 
         list_6 = [department, room, clinic]
         for j in list_6:
@@ -615,7 +625,7 @@ class AmbulatoryPatient(Patient):
 
     @staticmethod
     def check_number(number):
-        """Целое число от 1 до 20."""
+        """An integer from 1 to 20."""
         if number.isdigit():
             number = int(number)
             if 1 <= number <= 20:
@@ -624,7 +634,7 @@ class AmbulatoryPatient(Patient):
 
     @staticmethod
     def check_disability(disability):
-        """Целое число от 0 до 3."""
+        """An integer from 0 to 3."""
         if disability.isdigit():
             disability = int(disability)
             if 0 <= disability <= 3:
@@ -633,7 +643,7 @@ class AmbulatoryPatient(Patient):
 
     @staticmethod
     def check_group(group):
-        """ Только строковые значения 'I', 'II', 'III'."""
+        """String values only 'I', 'II', 'III'."""
         if group in ['I', 'II', 'III']:
             return True
         else:
@@ -678,8 +688,8 @@ class AmbulatoryPatient(Patient):
         disability = 'Группа инвалидности: {}\n'.format(self.disability) if (self.disability != 0 and self.disability
                                                                              is not None) else None
         group = 'Группа здоровья: {}\n'.format(self.health_group) if self.health_group is not None else None
-        chronic = 'Хронический диагноз: {}\n'.format(self.chronic_diagnosis) if self.chronic_diagnosis != 'Не выявлено'\
-            else None
+        chronic = 'Хронический диагноз: {}\n'.format(self.chronic_diagnosis) if self.chronic_diagnosis != \
+            'Не выявлено' else None
         list_7 = [number, disability, group, chronic]
         for k in list_7:
             if k is not None:
