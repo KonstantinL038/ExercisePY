@@ -16,7 +16,7 @@ class ScriptReader:
                 stat1 = line[line.find(":") + 2:line.find(";")]
                 ans2 = line[line.find("2)") + 2:line.find(":", line.find("2)"))]
                 stat2 = line[line.find(":", line.find("2)")) + 2: line.find(" Эффект:")]
-                effect = line[line.find(" Эффект:") + 9: -1]
+                effect = line[line.find(" Эффект:")+9: -1]
 
                 stat_dict[ans1] = stat1
                 stat_dict[ans2] = stat2
@@ -90,7 +90,7 @@ class Menu(ScriptReader):
                         input("\nНажмите Enter, чтобы продолжить.")
                         print("")
                         k += 1
-                        if k <= 3:
+                        if k <= 4:
                             print("┍─━───━───━────━──━──┙◆┕──━──━───━───━───━──┑")
 
                     else:
@@ -122,9 +122,9 @@ class Stats(Menu):
     def change_stat(self, player_ans, ans1, ans2):
         global event
         even = "answer"
-        if player_ans == '1':
+        if int(player_ans) == 1:
             event = ans1
-        elif player_ans == '2':
+        elif int(player_ans) == 2:
             event = ans2
 
         event_st = self.script[self.question][event].split()
@@ -140,29 +140,28 @@ class Stats(Menu):
     def get_stats(self):
         stat_list = [self.church, self.society, self.army, self.treasury]
         stat_sing = ["†", "♀", "⚔", "$"]
-        print(
-            "\n─━───━────━──━──┙◆┕──━──━───━───━───━───━────━──━──┙◆┕──━──━───━───━───━───━────━──━──┙◆┕──━──━───━───━──")
+        print("\n─━───━────━──━──┙◆┕──━──━───━───━───━───━────━──━──┙◆┕──━──━───━───━───━───━────━──━──┙◆┕──━──━───━───━──")
         print(f"\n                                                 Год {self.year} ")
         self.year += 1
         print("СТАТИСТИКА".rjust(58))
         for i in range(len(stat_list)):
             time.sleep(0.08)
             if 0 < int(stat_list[i]) <= 10:
-                print(f'                                           {stat_sing[i]} -〘 ▌︎︎ ︎︎        〙')
+                print(f'                                           {stat_sing[i]} -〘 ▌︎︎ ︎︎             〙')
             elif 10 < int(stat_list[i]) <= 20:
-                print(f'                                           {stat_sing[i]} -〘 ▌︎▌︎ ︎︎       〙')
+                print(f'                                           {stat_sing[i]} -〘 ▌︎▌︎ ︎︎           〙')
             elif 20 < int(stat_list[i]) <= 30:
-                print(f'                                           {stat_sing[i]} -〘 ▌︎▌︎▌︎︎︎       〙')
+                print(f'                                           {stat_sing[i]} -〘 ▌︎▌︎▌︎︎︎          〙')
             elif 30 < int(stat_list[i]) <= 40:
-                print(f'                                           {stat_sing[i]} -〘 ▌︎▌︎▌︎▌︎︎ ︎︎     〙')
+                print(f'                                           {stat_sing[i]} -〘 ▌︎▌︎▌︎▌︎︎ ︎︎        〙')
             elif 40 < int(stat_list[i]) <= 50:
-                print(f'                                           {stat_sing[i]} -〘 ▌︎▌︎▌︎▌︎▌︎︎     〙')
+                print(f'                                           {stat_sing[i]} -〘 ▌︎▌︎▌︎▌︎▌︎︎       〙')
             elif 50 < int(stat_list[i]) <= 60:
-                print(f'                                           {stat_sing[i]} -〘 ▌︎▌︎▌︎▌︎▌︎▌︎︎ ︎︎   〙')
+                print(f'                                           {stat_sing[i]} -〘 ▌︎▌︎▌︎▌︎▌︎▌︎︎ ︎︎     〙')
             elif 60 < int(stat_list[i]) <= 70:
-                print(f'                                           {stat_sing[i]} -〘 ▌︎▌︎▌︎▌︎▌︎▌︎▌︎︎   〙')
+                print(f'                                           {stat_sing[i]} -〘 ▌︎▌︎▌︎▌︎▌︎▌︎▌︎︎    〙')
             elif 70 < int(stat_list[i]) <= 80:
-                print(f'                                           {stat_sing[i]} -〘 ▌︎▌︎▌︎▌︎▌︎▌︎▌︎▌︎︎ ︎︎ 〙')
+                print(f'                                           {stat_sing[i]} -〘 ▌︎▌︎▌︎▌︎▌︎▌︎▌︎▌︎︎ ︎︎  〙')
             elif 80 < int(stat_list[i]) <= 90:
                 print(f'                                           {stat_sing[i]} -〘 ▌︎▌︎▌︎▌︎▌︎▌︎▌︎▌︎▌︎ 〙')
             elif 90 < int(stat_list[i]) <= 100:
@@ -199,10 +198,13 @@ class Stats(Menu):
                 print("☨", end=" ")
             elif i == "Внезапное счастье":
                 self.society += 5
-                print("✮︎", end=" ")
+                print("☘︎︎", end=" ")
             elif i == "Порча":
                 self.society -= 5
                 print("♨︎", end=" ")
+            elif i == "Голод":
+                self.society -= 5
+                print("☹︎︎", end=" ")
         print("\n")
 
     def lose_game(self):
@@ -215,11 +217,11 @@ class Stats(Menu):
         elif self.church >= 100:
             print("Значимость церкви сильно возросла. Вы больше не нужны вашему государству.")
         elif self.army <= 0:
-            print("Захватчики на пороге, а страну защищать некому.")
+            print("Вы ведете в бой остатки армии и погибаете у пьедестала трона.")
         elif self.army >= 100:
             print("Ваша армия совершил военный переворот, вы больше не правите государством.")
         elif self.treasury <= 0:
-            print(
-                "\n─━───━────━──━──┙◆┕──━──━───━───━───━───━────━──━──┙◆┕──━──━───━───━───━───━────━──━──┙◆┕──━──━───━───━──")
+            print("\n─━───━────━──━──┙◆┕──━──━───━───━───━───━────━──━──┙◆┕──━──━───━───━───━───━────━──━──┙◆┕──━──━───━───━──")
             print("\nВаша страна разрушена. Все принадлежит купцам и знати.")
         print("ВЫ ПРОИГРАЛИ!")
+
